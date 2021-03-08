@@ -349,15 +349,20 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
 elif params['action'] == 'download':
     pack = True if params['pack'] == "true" else False
     Cookie = LTV.login(__username__, __password__)
-    try:
-        subs = Download(params["download_url"], params["filename"], pack,
-                        params['lang'])
-    except:
-        subs = Download(params["download_url"], 'filename', pack,
-                        params['lang'])
-    for sub in subs:
-        listitem = xbmcgui.ListItem(label2=os.path.basename(sub))
-        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=sub,
-                                    listitem=listitem, isFolder=False)
+    
+    if Cookie is None:  
+        dialog = xbmcgui.Dialog()
+        ok = dialog.ok('Kodi', 'Usuário ou senha inválidos.')
+    else:
+        try:
+            subs = Download(params["download_url"], params["filename"], pack,
+                            params['lang'])
+        except:
+            subs = Download(params["download_url"], 'filename', pack,
+                            params['lang'])
+        for sub in subs:
+            listitem = xbmcgui.ListItem(label2=os.path.basename(sub))
+            xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=sub,
+                                        listitem=listitem, isFolder=False)
 
 xbmcplugin.endOfDirectory(int(sys.argv[1]))

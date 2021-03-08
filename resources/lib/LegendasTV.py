@@ -118,9 +118,9 @@ class LegendasTV:
             })
             request = urllib2.Request("http://legendas.tv/login", login_data)
             response = normalizeString(urllib2.urlopen(request).read())
-            if response.__contains__(u'Usuário ou senha inválidos'):
+            if response.__contains__(u'Usuario ou senha invalidos'):
                 self.Log(
-                    u" Login Failed. Check your data at the addon configuration.")
+                    u" Login Failed. Check your data at the addon configuration.")                    
                 return None
             else:
                 return self.cookie
