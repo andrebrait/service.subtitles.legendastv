@@ -19,7 +19,7 @@ sub_ext = 'srt aas ssa sub smi'
 global regex_1, regex_2, regex_3
 regex_1 = r"<div class=\"([^\"]*?)\">\s*?<span class=\"number .*?<div class=\"f_left\"><p><a href=\"([^\"]*)\">([^<]*)</a></p><p class=\"data\">.*?downloads, nota (\d*?),.*?<img .*? title=\"([^\"]*)\" /></div>"
 regex_2 = r"class=\"load_more\""
-regex_3 = r"<button class=\"icon_arrow\" onclick=\"window.open\('([^']*?)', '_self'\)\">DOWNLOAD</button>"
+regex_3 = r"http:\/\/legendas\.tv\/download\/([^\/]*?)\/"
 
 LANGUAGES = (
 
@@ -425,9 +425,8 @@ class LegendasTV:
                     x, Page, MainID["title"], MainID["id"]))
 
     def Download(self, url):
-        Response = self._urlopen(url).read()
-        downloadID = re.findall(regex_3, Response)[0] if re.search(regex_3,
-                                                                   Response) else 0
+        downloadID = '/downloadarquivo/' + re.findall(regex_3, url)[0]
+        self.Log('DOWNLOAD ID: %s' % downloadID)
         if not downloadID:
             return None, None
         Response = self._urlopen("http://legendas.tv%s" % downloadID)
